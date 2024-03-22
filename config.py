@@ -1,8 +1,8 @@
-sudo_users = [829259422,1984763765]
+sudo_users = [1596559467]
 
-iptv_link = "https://gist.githubusercontent.com/nikhil123nikhil/74fd13528fdc6d47d4855b50ea672ef1/raw/177f60c92223253836549a31a82b3d52bb763e96/iptv.json"
+iptv_link = "https://dzu7.short.gy/JoinTelegram-M3UIndia-TataPlay.m3u"
 
-GROUP_TAG = "Nikhil"
+GROUP_TAG = "Mahesh"
 
 
 CHANNELS_TEXT = """<b>Here are the List of Channels : </b>
