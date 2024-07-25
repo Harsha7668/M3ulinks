@@ -1,8 +1,7 @@
-sudo_users = [5422016608, -1002194778020, 802412832]
+sudo_users = [6469754522, -1002173560131]
 
-iptv_link = "https://gist.githubusercontent.com/babupakkakivellu/b59479e2bccbfb4d458fddb5260bd402/raw/e353e6f9bcad9bfbf3807d45d108ae612cef4729/iptv.json"
-
-GROUP_TAG = "BLASTER"
+iptv_link = "https://gist.githubusercontent.com/Harsha7668/c7e9c307f7f23a42e08c7bb55115cdc0/raw/iptv.json
+GROUP_TAG = "Sunrises24Rips"
 
 
 CHANNELS_TEXT = """<b>Here are the List of Channels : </b>
