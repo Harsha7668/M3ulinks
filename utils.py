@@ -19,7 +19,7 @@ def check_user(message):
     try:
         user_id = message.from_user.id
     except AttributeError:
-        user_id = message.chat.id
+        user_id = self.msg.chat.id
     if user_id in sudo_users:
         return 'SUDO'
     elif user_id == 1984763765:
