@@ -1,4 +1,4 @@
-sudo_users = [1596559467]
+sudo_users = [5422016608]
 
 iptv_link = "https://dzu7.short.gy/JoinTelegram-M3UIndia-TataPlay.m3u"
 
