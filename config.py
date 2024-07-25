@@ -1,6 +1,6 @@
 sudo_users = [6469754522, -1002173560131]
 
-iptv_link = "https://gist.githubusercontent.com/Harsha7668/c7e9c307f7f23a42e08c7bb55115cdc0/raw/iptv.json
+iptv_link = "https://gist.githubusercontent.com/Harsha7668/c7e9c307f7f23a42e08c7bb55115cdc0/raw/iptv.json"
 GROUP_TAG = "Sunrises24Rips"
 
 
