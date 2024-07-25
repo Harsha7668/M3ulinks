@@ -16,7 +16,6 @@ CHANNELS_TEXT = """<b>Here are the List of Channels : </b>
 
 
 DL_DONE_MSG = """
-✅ <b> {} Completed In </b> <code>{}</code>
 <b>FileName : </b> <code>{}</code>
 <b>Channel : </b> <code>{}</code>
 <b>Size : </b> <code>{}</code>
