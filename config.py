@@ -1,6 +1,6 @@
 sudo_users = [5422016608, -1002194778020, 802412832]
 
-iptv_link = "https://gist.githubusercontent.com/babupakkakivellu/b59479e2bccbfb4d458fddb5260bd402/raw/b8628b156a5adfa70ea639e21bedb99867d38424/iptv.json"
+iptv_link = "https://gist.githubusercontent.com/babupakkakivellu/b59479e2bccbfb4d458fddb5260bd402/raw/e353e6f9bcad9bfbf3807d45d108ae612cef4729/iptv.json"
 
 GROUP_TAG = "BLASTER"
 
