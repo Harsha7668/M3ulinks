@@ -1,6 +1,6 @@
 sudo_users = [5422016608]
 
-iptv_link = "https://dzu7.short.gy/JoinTelegram-M3UIndia-TataPlay.m3u"
+iptv_link = "https://gist.githubusercontent.com/babupakkakivellu/a5fa20ef624e0d251321d6ede6ef5088/raw/67075276313de054cf5402b9b4e6bf03fa94b608/iptv.json"
 
 GROUP_TAG = "Mahesh"
 
