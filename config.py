@@ -1,4 +1,4 @@
-sudo_users = [5422016608]
+sudo_users = [5422016608, -1002194778020]
 
 iptv_link = "https://gist.github.com/babupakkakivellu/b59479e2bccbfb4d458fddb5260bd402/raw/b3b15ffe20e552dfee1af649f22110f80ba5fb31/iptv.json"
 
