@@ -228,7 +228,7 @@ def multi_rec(app, message):
     caption = DL_DONE_MSG.format(
             "Recording", get_readable_time(end_rec_time - start_rec_time), filename, iptv_data[channel][0]["title"], size)
 
-    app.send_video(video=filename, chat_id=message.from_user.id, caption=caption, progress=progress_for_pyrogram, progress_args=(
+    app.send_video(video=filename, chat_id=self.msg.chat.id, caption=caption, progress=progress_for_pyrogram, progress_args=(
             "Uploading... \n", msg, start_time), thumb=thumb, duration=duration, width=1280, height=720)
     msg.delete()
 
