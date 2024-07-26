@@ -242,9 +242,8 @@ def multi_rec(app, message):
     os.remove(filename)
 
 
-
-    def webdl_command_handler(app, message, channel, start_time, end_time, title):
-        iptv_data = fetch_data(iptv_link)
+def webdl_command_handler(app, message, channel, start_time, end_time, title):
+    iptv_data = fetch_data(iptv_link)
 
     if channel not in iptv_data:
         message.reply_text(f"{channel} not Available")
