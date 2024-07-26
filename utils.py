@@ -14,6 +14,13 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 
 from config import sudo_users, GROUP_TAG, DL_DONE_MSG, iptv_link, CHANNELS_TEXT
+import subprocess
+import time
+import os
+from datetime import datetime, timedelta
+
+
+
 
 def check_user(message):
     try:
@@ -222,6 +229,82 @@ def multi_rec(app, message):
     size = humanbytes(os.path.getsize(filename))
 
     # destination = f"/TATAPLAY WEB-DL/CatchupData/{channel_name}"
+    duration = get_duration(filename)
+    thumb = get_thumbnail(filename, "", duration / 2)
+    start_time = time.time()
+    caption = DL_DONE_MSG.format(
+        filename, iptv_data[channel][0]["title"], size)
+
+    app.send_video(video=filename, chat_id=message.chat.id, caption=caption, progress=progress_for_pyrogram, progress_args=(
+            "Uploading... \n", msg, start_time), thumb=thumb, duration=duration, width=1280, height=720)
+    msg.delete()
+
+    os.remove(filename)
+
+
+def webdl_command_handler(app, message):
+    cmd_parts = message.text.split()
+    channel = None
+    start_time = None
+    end_time = None
+    title = None
+
+    for i, part in enumerate(cmd_parts):
+        if part == '-c':
+            channel = cmd_parts[i + 1]
+        elif part == '-ss':
+            start_time = cmd_parts[i + 1]
+        elif part == '-to':
+            end_time = cmd_parts[i + 1]
+        elif part == '-title':
+            title = " ".join(cmd_parts[i + 1:])
+
+    if not channel or not start_time or not end_time or not title:
+        message.reply_text("Invalid command format. Please use: /webdl -c <channel> -ss <start_time> -to <end_time> -title <title>")
+        return
+
+    # Convert start_time and end_time to datetime objects
+    start_time = datetime.strptime(start_time, "%d/%m/%Y+%H:%M:%S")
+    end_time = datetime.strptime(end_time, "%d/%m/%Y+%H:%M:%S")
+
+    # Check if the start_time is within the last 7 days
+    if start_time < datetime.now() - timedelta(days=7):
+        message.reply_text("You can only record sessions within the last 7 days.")
+        return
+
+    # Convert start_time and end_time to the required format for ffmpeg
+    duration = (end_time - start_time).total_seconds()
+
+    iptv_data = fetch_data(iptv_link)
+    if channel not in iptv_data:
+        message.reply_text(f"{channel} not Available")
+        return
+
+    video_opts = 'ffmpeg -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -i'
+    video_opts_2 = '-ss'
+    video_opts_3 = '-to'
+    video_opts_4 = '-map 0:v:0 -map 0:a'
+    audio = "-".join(iptv_data[channel][0]["audio"])
+    filename = f'[{GROUP_TAG}] {iptv_data[channel][0]["title"]} - {title} - {ind_time()} [{iptv_data[channel][0]["quality"]}] [x264] {iptv_data[channel][0]["ripType"]} [{audio}].mkv'
+
+    streamUrl = iptv_data[channel][0]["link"]
+
+    ffmpeg_cmd = video_opts.split() + \
+        [streamUrl] + video_opts_2.split() + [start_time.strftime('%H:%M:%S')] + \
+        video_opts_3.split() + [end_time.strftime('%H:%M:%S')] + video_opts_4.split() + [filename]
+    
+    msg = message.reply_text(f"Recording In Progress...")
+    subprocess.run(ffmpeg_cmd)
+
+    if not os.path.exists(filename):
+        msg.edit(f"Recording Failed")
+        return
+
+    msg.edit(f"{channel} Recorded Successfully")
+
+    msg.edit(f"Uploading...")
+
+    size = humanbytes(os.path.getsize(filename))
     duration = get_duration(filename)
     thumb = get_thumbnail(filename, "", duration / 2)
     start_time = time.time()
