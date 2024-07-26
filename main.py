@@ -30,7 +30,6 @@ def multirec_handler(app, message):
 
 
 
-# Function to handle the /webdl command
 @app.on_message(filters.incoming & filters.command(['webdl']) & filters.text)
 def webdl_handler(app, message):
     auth_user = check_user(message)
