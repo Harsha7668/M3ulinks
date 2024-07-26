@@ -242,47 +242,20 @@ def multi_rec(app, message):
     os.remove(filename)
 
 
-def webdl_command_handler(app, message):
-    cmd_parts = message.text.split()
-    channel = None
-    start_time = None
-    end_time = None
-    title = None
 
-    for i, part in enumerate(cmd_parts):
-        if part == '-c':
-            channel = cmd_parts[i + 1]
-        elif part == '-ss':
-            start_time = cmd_parts[i + 1]
-        elif part == '-to':
-            end_time = cmd_parts[i + 1]
-        elif part == '-title':
-            title = " ".join(cmd_parts[i + 1:])
-
-    if not channel or not start_time or not end_time or not title:
-        message.reply_text("Invalid command format. Please use: /webdl -c <channel> -ss <start_time> -to <end_time> -title <title>")
-        return
-
-    # Convert start_time and end_time to datetime objects
-    start_time = datetime.strptime(start_time, "%d/%m/%Y+%H:%M:%S")
-    end_time = datetime.strptime(end_time, "%d/%m/%Y+%H:%M:%S")
-
-    # Check if the start_time is within the last 7 days
-    if start_time < datetime.now() - timedelta(days=7):
-        message.reply_text("You can only record sessions within the last 7 days.")
-        return
-
-    # Convert start_time and end_time to the required format for ffmpeg
-    duration = (end_time - start_time).total_seconds()
-
+    def webdl_command_handler(app, message, channel, start_time, end_time, title):
     iptv_data = fetch_data(iptv_link)
+
     if channel not in iptv_data:
         message.reply_text(f"{channel} not Available")
         return
 
+    # Calculate duration
+    duration = (end_time - start_time).total_seconds()
+
     video_opts = 'ffmpeg -reconnect 1 -reconnect_at_eof 1 -reconnect_streamed 1 -i'
     video_opts_2 = '-ss'
-    video_opts_3 = '-to'
+    video_opts_3 = '-t'
     video_opts_4 = '-map 0:v:0 -map 0:a'
     audio = "-".join(iptv_data[channel][0]["audio"])
     filename = f'[{GROUP_TAG}] {iptv_data[channel][0]["title"]} - {title} - {ind_time()} [{iptv_data[channel][0]["quality"]}] [x264] {iptv_data[channel][0]["ripType"]} [{audio}].mkv'
@@ -291,7 +264,7 @@ def webdl_command_handler(app, message):
 
     ffmpeg_cmd = video_opts.split() + \
         [streamUrl] + video_opts_2.split() + [start_time.strftime('%H:%M:%S')] + \
-        video_opts_3.split() + [end_time.strftime('%H:%M:%S')] + video_opts_4.split() + [filename]
+        video_opts_3.split() + [str(duration)] + video_opts_4.split() + [filename]
     
     msg = message.reply_text(f"Recording In Progress...")
     subprocess.run(ffmpeg_cmd)
@@ -301,7 +274,6 @@ def webdl_command_handler(app, message):
         return
 
     msg.edit(f"{channel} Recorded Successfully")
-
     msg.edit(f"Uploading...")
 
     size = humanbytes(os.path.getsize(filename))
